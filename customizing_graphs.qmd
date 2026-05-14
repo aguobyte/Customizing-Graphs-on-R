@@ -1,0 +1,99 @@
+---
+title: "Graph Customization"
+author: "Aiste Guobyte"
+format: 
+  html:
+    toc: true
+    code-fold: false
+    code-summary: "Show code"
+date: "2026-05-13"
+brand: _brand.yml
+---
+
+## Intro
+
+This document summarizes helpful tips for simple graph customization.
+
+```{r, warning = F, message = F}
+library(tidyverse)
+```
+
+
+## Create a Theme
+
+First, set your colors for easy access. Color schemes can be created using online palette generators as well as packages like [MonochromeR](https://github.com/cararthompson/monochromeR) by Cara Thompson. Here is a link to the [ShinyApp](https://cararthompson.shinyapps.io/monochromeR/).
+
+Ensure your color palettes are accessible for people with color blindness.
+
+```{r}
+
+cred   <- "#AB1721"
+cblue  <- "#2A3B6B"
+cdark  <- "#1A1A2E"
+cwhite <- "#FFFFFF"
+
+```
+
+Next, create a chunk of code that includes edits to a specific theme (e.g., theme_bw). This can be pasted on the start of a document to streamline all charts in the document. Play around with your set color scheme for uniformly themed but different colored graphs throughout a document. Edits for each part of the graph can be found [here](https://ggplot2.tidyverse.org/reference/theme.html).
+
+```{r}
+
+list(theme_bw(base_size = 15, base_family = "Roboto Mono"), # use theme_bw to check default settings of theme bw.
+  labs(x = NULL), # remove this if the x label should appear 
+  theme(panel.grid.minor.x = element_blank(), # only y major remains 
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    plot.title = element_text(color = cred, hjust = 0.5), # centered title
+    text = element_text(color = cdark), # set color for all text
+    axis.text.y = element_text(angle = 0, hjust = 1, color = cdark),
+    axis.text.x = element_text(color = cdark),
+    axis.line.x = element_line(linewidth = 1, color = cdark),
+    axis.line.y = element_blank(), # left only the bottom line
+    panel.border = element_blank(), # no border
+    strip.background = element_blank(),
+    strip.placement =  "outside",
+    panel.background = element_blank())) -> CSimpleTheme # no border
+    
+```
+
+## Fonts
+
+If you download new fonts and have trouble with your computer recognizing them (e.g., paths on local user rather than Windows/Fonts), you can use the package extrafont to import fonts into R and then load fonts to use them. This has worked quite well for me. 
+
+```{r, include = F}
+
+# extrafont::font_import() run if necessary to add new fonts
+extrafont::loadfonts(device = "win")
+
+```
+
+
+## Example
+
+Here is a graph using a simulated data set.
+
+```{r, warning = F}
+read_rds("tbi_long.rds") -> long_df
+
+ggplot(long_df, aes(x = time, y = value, group = id)) +
+  geom_line(alpha = 0.3, linewidth = 0.4, position = position_jitter(width = 0.05)) +
+  stat_summary(
+    aes(group = 1),
+    fun = mean,
+    geom = "line",
+    color = "red",
+    linewidth = 1.2) +
+  labs(
+    y = "Outcome",
+    title = "Individual & Mean Change from Pre to Post") +
+  scale_x_discrete(
+    labels = c(gcs_score_post = "GCS Score Post",
+               gcs_score_pre = "GCS Score Pre"),
+    expand = expansion(mult = c(.15, .15))) + # fills in space left and right
+  scale_y_continuous(limits = c(0, 15)) + 
+  CSimpleTheme
+```
+
+## Other
+
+I use a _brand.yml doc to set logos, fonts, and colors on my HTML docs. Credit goes to [Charlotte Wickham](https://github.com/cwickham/arcadonia-brand) who presented this at R/Medicine 2026.

@@ -1,0 +1,49 @@
+# Cooper Brand
+# CNI
+
+meta:
+  name: Cooper University Healthcare
+  link: https://www.cooperhealth.org/
+
+logo:
+  images:
+    seal:
+      path: logos/cooper_c.png
+      alt: Cooper University Healthcare C 
+    wordmark:
+      path: logos/cooper-logo.png
+      alt: Cooper University Healthcare Main Logo
+  small: wordmark
+  medium: wordmark
+  large: wordmark
+
+color:
+  palette:
+    cred: "#AB1721"
+    cblue: "#2A3B6B"
+    cdark: "#1A1A2E"
+    cwhite: "#FFFFFF"
+    cpurple: "#43335C"
+    clightblue: "#9BA3B9"
+  background: "#FFFFFF"
+  foreground: "#1A1A2E"
+  primary: "#AB1721"
+  
+typography:
+  fonts:
+    - family: Lato
+      source: google
+      weight: [400, 500, 700]
+    - family: Montserrat
+      source: google
+      weight: [400, 700]
+  base:
+    family: Lato
+    size: 12pt
+  headings:
+    family: Montserrat
+    weight: 500
+    color: "#AB1721"
+  link:
+    color: "#1A1A2E"
+    decoration: underline
